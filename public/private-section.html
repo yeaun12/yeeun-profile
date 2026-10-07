@@ -1,0 +1,17 @@
+<section class="vault" id="private" aria-labelledby="vault-title">
+<span class="badge">비공개 영역 · 패스키 인증</span><h2 id="vault-title">나만 보는 기록</h2>
+<p>위의 소개는 누구나 볼 수 있습니다. 이곳의 가상 프로젝트 메모·지원 목록·회고는 내 패스키로 들어간 뒤에만 표시됩니다. 실제 개인정보를 넣지 않았습니다.</p>
+<label>계정 이름<input id="vault-username" autocomplete="username webauthn" placeholder="예: yeeun-demo" maxlength="32"></label>
+<label>패스키 이름<input id="vault-keyname" placeholder="예: 내 PC / 휴대전화" maxlength="80"></label>
+<label>패스키를 저장할 곳<select id="vault-storage"><option>기기 자체</option><option>구글 비밀번호 관리자</option><option>보안 키</option><option>기타 비밀번호 관리자</option></select></label>
+<small>실제 등록 창에서 선택한 저장소와 일치하도록 고르세요. 기기 잠금 해제 PIN은 이 사이트의 비밀번호가 아닙니다.</small>
+<button id="vault-register">새 계정과 패스키 등록</button>
+<div id="vault-locked"><p>잠겨 있습니다. 비공개 내용은 아직 서버에서 가져오지 않았습니다.</p><button id="vault-login">패스키로 로그인</button></div>
+<div id="vault-open" hidden><p id="vault-account"></p><button id="vault-logout" class="secondary">로그아웃</button><div id="vault-notes"></div><h3>내 패스키</h3><div id="vault-keys"></div><p id="vault-policy"></p></div>
+<p id="vault-status" class="status" role="status" aria-live="polite"></p>
+<details><summary>과제 확인과 기록 내려받기</summary><p>가상 계정 2개로 서로 다른 자료를 확인하세요. 이 탭의 요청과 응답은 JSON으로 내려받을 수 있습니다.</p>
+<button id="vault-probe-anon" class="secondary">로그아웃 후 직접 요청 검사</button><button id="vault-probe-replay" class="secondary">사용한 로그인 질문 재사용</button>
+<label>다른 계정의 자료 ID<input id="vault-foreign-id" placeholder="다른 계정 화면의 자료 ID"></label><button id="vault-probe-foreign" class="secondary">다른 계정 자료 조회 검사</button>
+<label>다른 계정 ID<input id="vault-foreign-owner" placeholder="다른 계정 화면의 계정 ID"></label><button id="vault-probe-owner" class="secondary">요청 본문 계정 변조 검사</button>
+<button id="vault-export">요청·응답 JSON 내려받기</button><small>로그아웃 뒤 같은 세션 값 재요청·잘못된 서명·삭제된 키 검사는 자동 검사에도 포함됩니다. 실제 기기 검사는 별도 증빙을 남겨 주세요.</small></details>
+</section>
