@@ -17,12 +17,18 @@ let control=$('#vault-username').closest('label');
 while(control && control!==$('#vault-open')){const next=control.nextElementSibling;authPanel.append(control);control=next;}
 const checks=vault.querySelector(':scope > details');
 workPanel.append($('#vault-open'),checks);layout.append(authPanel,workPanel);vault.append(layout);
-authPanel.append($('#vault-status'));
+const sessionActions=document.createElement('div');
+sessionActions.style.display='flex';sessionActions.style.flexWrap='wrap';sessionActions.style.alignItems='center';
+$('#vault-logout').hidden=true;
+sessionActions.append($('#vault-login'),$('#vault-logout'));
+authPanel.append(sessionActions,$('#vault-status'));
+function syncSessionActions(){$('#vault-login').disabled=busy||!!me;$('#vault-logout').hidden=!me;}
+
 function clearAccountInputs(){for(const id of ['#vault-keyname','#vault-foreign-id','#vault-foreign-owner'])$(id).value='';$('#vault-storage').selectedIndex=0;localToggle.checked=false;}
 $('#vault-username').addEventListener('input',()=>{clearAccountInputs();lastLogin=null;status('');});
-async function run(fn){if(busy)return;busy=true;document.querySelectorAll('.vault button').forEach(x=>x.disabled=true);try{await fn();}catch(e){status(e.message);}finally{busy=false;document.querySelectorAll('.vault button').forEach(x=>x.disabled=false);}}
+async function run(fn){if(busy)return;busy=true;document.querySelectorAll('.vault button').forEach(x=>x.disabled=true);try{await fn();}catch(e){status(e.message);}finally{busy=false;document.querySelectorAll('.vault button').forEach(x=>x.disabled=false);syncSessionActions();}}
 function text(tag,value){const el=document.createElement(tag);el.textContent=value;return el;}
-async function refresh(){const previousUser=me?.userId;try{me=await api('/me');}catch{me=null;}if(previousUser!==me?.userId){clearAccountInputs();if(!me)lastLogin=null;}$('#vault-locked').hidden=!!me;$('#vault-open').hidden=!me;$('#vault-register').textContent=me?'패스키 추가 등록':'새 계정과 패스키 등록';$('#vault-username').disabled=!!me;$('#vault-username').value=me?.username||$('#vault-username').value;if(!me){$('#vault-notes').replaceChildren();$('#vault-keys').replaceChildren();return;}
+async function refresh(){const previousUser=me?.userId;try{me=await api('/me');}catch{me=null;}if(previousUser!==me?.userId){clearAccountInputs();if(!me)lastLogin=null;}syncSessionActions();$('#vault-locked').hidden=!!me;$('#vault-open').hidden=!me;$('#vault-register').textContent=me?'패스키 추가 등록':'새 계정과 패스키 등록';$('#vault-username').disabled=!!me;$('#vault-username').value=me?.username||$('#vault-username').value;if(!me){$('#vault-notes').replaceChildren();$('#vault-keys').replaceChildren();return;}
 $('#vault-account').textContent=`${me.username} · 계정 ID: ${me.userId}`;
 const data=await api('/notes');$('#vault-notes').replaceChildren(...data.notes.map(n=>{const a=document.createElement('article');a.append(text('h3',n.title),text('p',n.body),text('small','자료 ID: '+n.id));return a;}));
 const keys=await api('/passkeys');$('#vault-policy').textContent=keys.lastKeyPolicy;
