@@ -10,9 +10,19 @@ const localChoice=document.createElement('label');
 const localToggle=document.createElement('input');localToggle.type='checkbox';localToggle.id='vault-local-only';localToggle.style.width='auto';
 localChoice.append(localToggle,document.createTextNode('이 기기의 인증기로 등록 (Windows Hello 등)'));
 $('#vault-register').before(localChoice);
+// Group existing controls without duplicating the public page markup.
+const vault=$('#private'), authPanel=document.createElement('div'), workPanel=document.createElement('div'), layout=document.createElement('div');
+authPanel.className='vault-auth';workPanel.className='vault-work';layout.className='vault-layout';
+let control=$('#vault-username').closest('label');
+while(control && control!==$('#vault-open')){const next=control.nextElementSibling;authPanel.append(control);control=next;}
+const checks=vault.querySelector(':scope > details');
+workPanel.append($('#vault-open'),checks);layout.append(authPanel,workPanel);vault.append(layout);
+authPanel.append($('#vault-status'));
+function clearAccountInputs(){for(const id of ['#vault-keyname','#vault-foreign-id','#vault-foreign-owner'])$(id).value='';$('#vault-storage').selectedIndex=0;localToggle.checked=false;}
+$('#vault-username').addEventListener('input',()=>{clearAccountInputs();lastLogin=null;status('');});
 async function run(fn){if(busy)return;busy=true;document.querySelectorAll('.vault button').forEach(x=>x.disabled=true);try{await fn();}catch(e){status(e.message);}finally{busy=false;document.querySelectorAll('.vault button').forEach(x=>x.disabled=false);}}
 function text(tag,value){const el=document.createElement(tag);el.textContent=value;return el;}
-async function refresh(){try{me=await api('/me');}catch{me=null;}$('#vault-locked').hidden=!!me;$('#vault-open').hidden=!me;$('#vault-register').textContent=me?'패스키 추가 등록':'새 계정과 패스키 등록';$('#vault-username').disabled=!!me;$('#vault-username').value=me?.username||$('#vault-username').value;if(!me){$('#vault-notes').replaceChildren();$('#vault-keys').replaceChildren();return;}
+async function refresh(){const previousUser=me?.userId;try{me=await api('/me');}catch{me=null;}if(previousUser!==me?.userId){clearAccountInputs();if(!me)lastLogin=null;}$('#vault-locked').hidden=!!me;$('#vault-open').hidden=!me;$('#vault-register').textContent=me?'패스키 추가 등록':'새 계정과 패스키 등록';$('#vault-username').disabled=!!me;$('#vault-username').value=me?.username||$('#vault-username').value;if(!me){$('#vault-notes').replaceChildren();$('#vault-keys').replaceChildren();return;}
 $('#vault-account').textContent=`${me.username} · 계정 ID: ${me.userId}`;
 const data=await api('/notes');$('#vault-notes').replaceChildren(...data.notes.map(n=>{const a=document.createElement('article');a.append(text('h3',n.title),text('p',n.body),text('small','자료 ID: '+n.id));return a;}));
 const keys=await api('/passkeys');$('#vault-policy').textContent=keys.lastKeyPolicy;
