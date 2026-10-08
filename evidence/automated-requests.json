@@ -1,0 +1,1028 @@
+{
+  "environment": "Chromium CDP 가상 인증기. 실제 기기 검사는 별도 필요.",
+  "passed": true,
+  "checks": [
+    "공개 원문 유지",
+    "미인증 401",
+    "취소 미저장",
+    "등록 질문 차이",
+    "공개키 저장",
+    "두 키 등록",
+    "서명 성공·실패",
+    "로그인 질문 차이",
+    "질문 재사용 거절",
+    "로그아웃 기존 세션 401",
+    "삭제 뒤 남은 키 로그인",
+    "삭제 키 거절",
+    "마지막 키 보호",
+    "두 계정 서로 다른 가상 자료",
+    "양방향 자료 조회 403",
+    "양방향 계정 변조 무시",
+    "자료 건수 불변",
+    "다른 계정 키 삭제 거절",
+    "다른 계정 패스키 거절",
+    "다른 Origin 거절"
+  ],
+  "records": [
+    {
+      "route": "/notes",
+      "method": "GET",
+      "request": {},
+      "status": 401,
+      "body": {
+        "error": "패스키 로그인이 필요합니다."
+      }
+    },
+    {
+      "route": "/register/options",
+      "method": "POST",
+      "request": {
+        "username": "cancelled",
+        "name": "취소",
+        "storage": "기기 자체"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "challenge": "Rz5WYLH5kFRr_i5Mgtzj8nyeLyFkOB7lXi1YmgrqgNA",
+          "rp": {
+            "name": "예은의 비공개 기록",
+            "id": "localhost"
+          },
+          "user": {
+            "id": "NzMyY2I5NWEtZTE0MC00NGMzLTk2MmQtOWEzMjJmYmI0NDIy",
+            "name": "cancelled",
+            "displayName": ""
+          },
+          "pubKeyCredParams": [
+            {
+              "alg": -7,
+              "type": "public-key"
+            },
+            {
+              "alg": -257,
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "attestation": "none",
+          "excludeCredentials": [],
+          "authenticatorSelection": {
+            "residentKey": "required",
+            "userVerification": "required",
+            "requireResidentKey": true
+          },
+          "extensions": {
+            "credProps": true
+          },
+          "hints": []
+        },
+        "ceremonyId": "nHSUtnm8HF6yHoNu11C9FKaOLHFrLc67jhbG8EDjnjA"
+      }
+    },
+    {
+      "route": "/register/cancel",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "nHSUtnm8HF6yHoNu11C9FKaOLHFrLc67jhbG8EDjnjA"
+      },
+      "status": 200,
+      "body": {
+        "ok": true,
+        "saved": false
+      }
+    },
+    {
+      "route": "/register/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a",
+        "name": "첫 번째 키",
+        "storage": "기기 자체"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "challenge": "TP_59rk7kKpaoJgBf_u83djd4IOzV3tl94nR9BhmcZs",
+          "rp": {
+            "name": "예은의 비공개 기록",
+            "id": "localhost"
+          },
+          "user": {
+            "id": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3",
+            "name": "account-a",
+            "displayName": ""
+          },
+          "pubKeyCredParams": [
+            {
+              "alg": -7,
+              "type": "public-key"
+            },
+            {
+              "alg": -257,
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "attestation": "none",
+          "excludeCredentials": [],
+          "authenticatorSelection": {
+            "residentKey": "required",
+            "userVerification": "required",
+            "requireResidentKey": true
+          },
+          "extensions": {
+            "credProps": true
+          },
+          "hints": []
+        },
+        "ceremonyId": "HkFpzeZGFt8ZAnKr1S4QOuPaBGGdOGCasr-LI2PIyvg"
+      }
+    },
+    {
+      "route": "/register/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "HkFpzeZGFt8ZAnKr1S4QOuPaBGGdOGCasr-LI2PIyvg",
+        "response": {
+          "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+          "rawId": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+          "response": {
+            "attestationObject": "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVikSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAQECAwQFBgcIAQIDBAUGBwgAIOnxkfyi2jgYDD3aGe3gTiEfvX5M5GSb-61n_3L_GGaEpQECAyYgASFYIPG5s8eXZLQ8Y_x-_VQk0CmH1PD1Kk43k9hamHvnszwaIlgg9Pqk9b0AqAANw15uyVfBM13RyPQCGqjg15bKig-9qKk",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiVFBfNTlyazdrS3Bhb0pnQmZfdTgzZGpkNElPelYzdGw5NG5SOUJobWNacyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "transports": [
+              "internal"
+            ],
+            "publicKeyAlgorithm": -7,
+            "publicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8bmzx5dktDxj_H79VCTQKYfU8PUqTjeT2FqYe-ezPBr0-qT1vQCoAA3DXm7JV8EzXdHI9AIaqODXlsqKD72oqQ",
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAQECAwQFBgcIAQIDBAUGBwgAIOnxkfyi2jgYDD3aGe3gTiEfvX5M5GSb-61n_3L_GGaEpQECAyYgASFYIPG5s8eXZLQ8Y_x-_VQk0CmH1PD1Kk43k9hamHvnszwaIlgg9Pqk9b0AqAANw15uyVfBM13RyPQCGqjg15bKig-9qKk"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {
+            "credProps": {
+              "rk": true
+            }
+          },
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true,
+        "publicKey": "pQECAyYgASFYIPG5s8eXZLQ8Y_x-_VQk0CmH1PD1Kk43k9hamHvnszwaIlgg9Pqk9b0AqAANw15uyVfBM13RyPQCGqjg15bKig-9qKk",
+        "note": "COSE 공개키입니다. 개인키와 비밀번호는 서버에 저장하지 않습니다."
+      }
+    },
+    {
+      "route": "/me",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "username": "account-a",
+        "userId": "9c0d7e9e-58c7-4b21-a06f-1661bcc6c027",
+        "session": "HttpOnly 세션 쿠키, 서버에는 SHA-256 해시만 저장, 1시간 만료"
+      }
+    },
+    {
+      "route": "/notes",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "notes": [
+          {
+            "id": "42ce455c-3a2c-44a2-ac49-0a825a1c50da",
+            "title": "프로젝트 메모",
+            "body": "account-a의 가상 기록 1. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "56b5c21e-eeca-443a-88c1-5b669f2d61bb",
+            "title": "학습 회고",
+            "body": "account-a의 가상 기록 3. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "ff6eed82-3cf2-497b-8a27-0ecda59face7",
+            "title": "지원 준비 목록",
+            "body": "account-a의 가상 기록 2. 과제 확인용으로 만든 내용입니다."
+          }
+        ],
+        "count": 3,
+        "owner": "9c0d7e9e-58c7-4b21-a06f-1661bcc6c027"
+      }
+    },
+    {
+      "route": "/register/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a",
+        "name": "두 번째 키",
+        "storage": "기기 자체"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "challenge": "c2TYumXvVq1mF4ZYXpVTyFgbOb5Yf_8CQXsbMIUzPhY",
+          "rp": {
+            "name": "예은의 비공개 기록",
+            "id": "localhost"
+          },
+          "user": {
+            "id": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3",
+            "name": "account-a",
+            "displayName": ""
+          },
+          "pubKeyCredParams": [
+            {
+              "alg": -7,
+              "type": "public-key"
+            },
+            {
+              "alg": -257,
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "attestation": "none",
+          "excludeCredentials": [
+            {
+              "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "authenticatorSelection": {
+            "residentKey": "required",
+            "userVerification": "required",
+            "requireResidentKey": true
+          },
+          "extensions": {
+            "credProps": true
+          },
+          "hints": []
+        },
+        "ceremonyId": "9zV9EVDG_vkOPRkggupxfeyGcEI3Nkd4-sb7huiXOLE"
+      }
+    },
+    {
+      "route": "/register/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "9zV9EVDG_vkOPRkggupxfeyGcEI3Nkd4-sb7huiXOLE",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "attestationObject": "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVikSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAQECAwQFBgcIAQIDBAUGBwgAINfM7-KmTlMUNq8JcuFIMM0r8owctRYwN4xgxIl5f6ITpQECAyYgASFYIOB7IWwsZmRE0CcGf_EN-JIgC_D2vCXkZ8aN6DSmMCllIlggEl4FL1ABA5ECHhFDpgF9FB3lN6TFfWLl8SxalcLGdtM",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiYzJUWXVtWHZWcTFtRjRaWVhwVlR5RmdiT2I1WWZfOENRWHNiTUlVelBoWSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZSwib3RoZXJfa2V5c19jYW5fYmVfYWRkZWRfaGVyZSI6ImRvIG5vdCBjb21wYXJlIGNsaWVudERhdGFKU09OIGFnYWluc3QgYSB0ZW1wbGF0ZS4gU2VlIGh0dHBzOi8vZ29vLmdsL3lhYlBleCJ9",
+            "transports": [
+              "internal"
+            ],
+            "publicKeyAlgorithm": -7,
+            "publicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE4HshbCxmZETQJwZ_8Q34kiAL8Pa8JeRnxo3oNKYwKWUSXgUvUAEDkQIeEUOmAX0UHeU3pMV9YuXxLFqVwsZ20w",
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAQECAwQFBgcIAQIDBAUGBwgAINfM7-KmTlMUNq8JcuFIMM0r8owctRYwN4xgxIl5f6ITpQECAyYgASFYIOB7IWwsZmRE0CcGf_EN-JIgC_D2vCXkZ8aN6DSmMCllIlggEl4FL1ABA5ECHhFDpgF9FB3lN6TFfWLl8SxalcLGdtM"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {
+            "credProps": {
+              "rk": true
+            }
+          },
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true,
+        "publicKey": "pQECAyYgASFYIOB7IWwsZmRE0CcGf_EN-JIgC_D2vCXkZ8aN6DSmMCllIlggEl4FL1ABA5ECHhFDpgF9FB3lN6TFfWLl8SxalcLGdtM",
+        "note": "COSE 공개키입니다. 개인키와 비밀번호는 서버에 저장하지 않습니다."
+      }
+    },
+    {
+      "route": "/passkeys",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "passkeys": [
+          {
+            "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+            "name": "첫 번째 키",
+            "storage": "기기 자체",
+            "created_at": 1791336495811,
+            "public_key": "pQECAyYgASFYIPG5s8eXZLQ8Y_x-_VQk0CmH1PD1Kk43k9hamHvnszwaIlgg9Pqk9b0AqAANw15uyVfBM13RyPQCGqjg15bKig-9qKk"
+          },
+          {
+            "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+            "name": "두 번째 키",
+            "storage": "기기 자체",
+            "created_at": 1791336495834,
+            "public_key": "pQECAyYgASFYIOB7IWwsZmRE0CcGf_EN-JIgC_D2vCXkZ8aN6DSmMCllIlggEl4FL1ABA5ECHhFDpgF9FB3lN6TFfWLl8SxalcLGdtM"
+          }
+        ],
+        "lastKeyPolicy": "마지막 패스키는 삭제할 수 없습니다. 모든 기기·저장소를 잃으면 복구할 수 없으며 비밀번호 우회 복구는 제공하지 않습니다."
+      }
+    },
+    {
+      "route": "/logout",
+      "method": "POST",
+      "request": {},
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "PqCeEBgBZ0Rxqmd6N4PAVyWeBjT9A9roNmGYb8UiEZg",
+          "allowCredentials": [
+            {
+              "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            },
+            {
+              "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "P03hOgSJEHybSEt6Z0tu_YJ-WKcVsNED4g1QHZf7yJk"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "P03hOgSJEHybSEt6Z0tu_YJ-WKcVsNED4g1QHZf7yJk",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAw",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiUHFDZUVCZ0JaMFJ4cW1kNk40UEFWeVdlQmpUOUE5cm9ObUdZYjhVaUVaZyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEUCIG4wvmc0gZc56IKFsrNJqU6PcuWyRhNf8t_0XMYXGz1kAiEAoQaMVSEiIpMoTSq3uTqqaMkIpP4JGhj7tMVRV7LQMpo",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "P03hOgSJEHybSEt6Z0tu_YJ-WKcVsNED4g1QHZf7yJk",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAw",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiUHFDZUVCZ0JaMFJ4cW1kNk40UEFWeVdlQmpUOUE5cm9ObUdZYjhVaUVaZyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEUCIG4wvmc0gZc56IKFsrNJqU6PcuWyRhNf8t_0XMYXGz1kAiEAoQaMVSEiIpMoTSq3uTqqaMkIpP4JGhj7tMVRV7LQMpo",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 400,
+      "body": {
+        "error": "질문이 만료되었거나 이미 사용되었습니다."
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "4Mky1BePaA63cqnREln40rWeHhztKZcY6IFvLOPY7FU",
+          "allowCredentials": [
+            {
+              "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            },
+            {
+              "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "TrZF8UzOeu9Dd9tAHQFVBG7LTDgY6cq0f5LQEKMluMM"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "TrZF8UzOeu9Dd9tAHQFVBG7LTDgY6cq0f5LQEKMluMM",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAABQ",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNE1reTFCZVBhQTYzY3FuUkVsbjQwcldlSGh6dEtaY1k2SUZ2TE9QWTdGVSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEYCIQDpw-E8t9dLgxxJkQzRBvzJFLtdbOMZ86vq5CFau1QP3wIhAIQ0qkq1krjN2Mm92WvFgYhl1a_mY22RFKZFqGckpyFb",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 400,
+      "body": {
+        "error": "패스키 서명 검증에 실패했습니다."
+      }
+    },
+    {
+      "route": "/logout",
+      "method": "POST",
+      "request": {},
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/notes",
+      "method": "GET",
+      "request": {
+        "Cookie": "t08_session=[가림]"
+      },
+      "status": 401,
+      "body": {
+        "error": "패스키 로그인이 필요합니다."
+      },
+      "test": "로그아웃 전 세션 재요청"
+    },
+    {
+      "route": "/notes",
+      "method": "GET",
+      "request": {},
+      "status": 401,
+      "body": {
+        "error": "패스키 로그인이 필요합니다."
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "taFGCaHvP11dd1Q8ipopObJlOrG00Qg63hTkMbRPVzE",
+          "allowCredentials": [
+            {
+              "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            },
+            {
+              "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "oDS6eSPChTJ2_WsT602GZkmfjOMux22pUIqwTFsM8ak"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "oDS6eSPChTJ2_WsT602GZkmfjOMux22pUIqwTFsM8ak",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAABw",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoidGFGR0NhSHZQMTFkZDFROGlwb3BPYkpsT3JHMDBRZzYzaFRrTWJSUFZ6RSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEQCIHhpHYZzs7aVYVY0ISWK3HRh_LqKXG6S-P0VlkLqCYs8AiArpytefwnjixGBaFU9QjoRnUDyQMHvXnvnYGL2hmvY3Q",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/passkeys/6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+      "method": "DELETE",
+      "request": {},
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/passkeys",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "passkeys": [
+          {
+            "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+            "name": "두 번째 키",
+            "storage": "기기 자체",
+            "created_at": 1791336495834,
+            "public_key": "pQECAyYgASFYIOB7IWwsZmRE0CcGf_EN-JIgC_D2vCXkZ8aN6DSmMCllIlggEl4FL1ABA5ECHhFDpgF9FB3lN6TFfWLl8SxalcLGdtM"
+          }
+        ],
+        "lastKeyPolicy": "마지막 패스키는 삭제할 수 없습니다. 모든 기기·저장소를 잃으면 복구할 수 없으며 비밀번호 우회 복구는 제공하지 않습니다."
+      }
+    },
+    {
+      "route": "/passkeys/18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+      "method": "DELETE",
+      "request": {},
+      "status": 409,
+      "body": {
+        "error": "마지막 패스키는 삭제할 수 없습니다. 먼저 다른 패스키를 등록하세요."
+      }
+    },
+    {
+      "route": "/logout",
+      "method": "POST",
+      "request": {},
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "jSvRRPI5YQx3BKyYSf8nw8LnT0UqxOm79mtBxSI8My8",
+          "allowCredentials": [
+            {
+              "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "6eV__WpxMVEs0HEAg3dLiJQZEpzfNvgCoB-GJvenjho"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "6eV__WpxMVEs0HEAg3dLiJQZEpzfNvgCoB-GJvenjho",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAACA",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoialN2UlJQSTVZUXgzQkt5WVNmOG53OExuVDBVcXhPbTc5bXRCeFNJOE15OCIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEYCIQDkp6Vn6MLLKbYzI1NelBYkdkXOHo5s7QrjDP4MAI30tQIhAIMkmGuBr6CGI2T1b2pXMNYkYKohHZK6dIvVnk4rbR6W",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "lcueK6AwM_d-Ea9vzfcIAkO4aKRgUalXsM0Lqu0HDE8",
+          "allowCredentials": [
+            {
+              "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "v2vAUaDaGWd3TFmmkzdCbaHmmi_FlAVFVfXJ3EnXJFs"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "v2vAUaDaGWd3TFmmkzdCbaHmmi_FlAVFVfXJ3EnXJFs",
+        "response": {
+          "id": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+          "rawId": "6fGR_KLaOBgMPdoZ7eBOIR-9fkzkZJv7rWf_cv8YZoQ",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAg",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoibGN1ZUs2QXdNX2QtRWE5dnpmY0lBa080YUtSZ1VhbFhzTTBMcXUwSERFOCIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEQCIFFHlsK_1skp1qv8TEPUyfu-XV45lukG525PxV_-rvenAiB3isjlcAQFDfN_7ki_RRziiZKQcGEeJ0AY3dtyvGexSw",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 400,
+      "body": {
+        "error": "등록된 패스키로 로그인할 수 없습니다."
+      }
+    },
+    {
+      "route": "/logout",
+      "method": "POST",
+      "request": {},
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/register/options",
+      "method": "POST",
+      "request": {
+        "username": "account-b",
+        "name": "B 키",
+        "storage": "기기 자체"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "challenge": "G532EvKXjO61f3C5nhT1UDVPC7daViXUVMoeTjzWPSw",
+          "rp": {
+            "name": "예은의 비공개 기록",
+            "id": "localhost"
+          },
+          "user": {
+            "id": "ZWEzY2M1MWItZDNjZS00YWJhLWFkOWUtNWY0YTgzZDMxZDgw",
+            "name": "account-b",
+            "displayName": ""
+          },
+          "pubKeyCredParams": [
+            {
+              "alg": -7,
+              "type": "public-key"
+            },
+            {
+              "alg": -257,
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "attestation": "none",
+          "excludeCredentials": [],
+          "authenticatorSelection": {
+            "residentKey": "required",
+            "userVerification": "required",
+            "requireResidentKey": true
+          },
+          "extensions": {
+            "credProps": true
+          },
+          "hints": []
+        },
+        "ceremonyId": "cLcbLQ30RY0fNuG2kHmZGCSs-2Lk6O8CTtHc05wIsjA"
+      }
+    },
+    {
+      "route": "/register/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "cLcbLQ30RY0fNuG2kHmZGCSs-2Lk6O8CTtHc05wIsjA",
+        "response": {
+          "id": "uWep6Vn_7yfmuIAodMgURrDHX_x_j8yRVoOa8-d2qvw",
+          "rawId": "uWep6Vn_7yfmuIAodMgURrDHX_x_j8yRVoOa8-d2qvw",
+          "response": {
+            "attestationObject": "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVikSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAQECAwQFBgcIAQIDBAUGBwgAILlnqelZ_-8n5riAKHTIFEawx1_8f4_MkVaDmvPndqr8pQECAyYgASFYIPL1NnkD34Dnhz4II0GyIvm2CW7BsyUh6j5sbyyieg2KIlggW_DXpFdVNjv9Vc3Yms7ROh29zuSren0NJPzM4Vy1HiM",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiRzUzMkV2S1hqTzYxZjNDNW5oVDFVRFZQQzdkYVZpWFVWTW9lVGp6V1BTdyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZSwib3RoZXJfa2V5c19jYW5fYmVfYWRkZWRfaGVyZSI6ImRvIG5vdCBjb21wYXJlIGNsaWVudERhdGFKU09OIGFnYWluc3QgYSB0ZW1wbGF0ZS4gU2VlIGh0dHBzOi8vZ29vLmdsL3lhYlBleCJ9",
+            "transports": [
+              "internal"
+            ],
+            "publicKeyAlgorithm": -7,
+            "publicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8vU2eQPfgOeHPggjQbIi-bYJbsGzJSHqPmxvLKJ6DYpb8NekV1U2O_1VzdiaztE6Hb3O5Kt6fQ0k_MzhXLUeIw",
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAQECAwQFBgcIAQIDBAUGBwgAILlnqelZ_-8n5riAKHTIFEawx1_8f4_MkVaDmvPndqr8pQECAyYgASFYIPL1NnkD34Dnhz4II0GyIvm2CW7BsyUh6j5sbyyieg2KIlggW_DXpFdVNjv9Vc3Yms7ROh29zuSren0NJPzM4Vy1HiM"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {
+            "credProps": {
+              "rk": true
+            }
+          },
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true,
+        "publicKey": "pQECAyYgASFYIPL1NnkD34Dnhz4II0GyIvm2CW7BsyUh6j5sbyyieg2KIlggW_DXpFdVNjv9Vc3Yms7ROh29zuSren0NJPzM4Vy1HiM",
+        "note": "COSE 공개키입니다. 개인키와 비밀번호는 서버에 저장하지 않습니다."
+      }
+    },
+    {
+      "route": "/me",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "username": "account-b",
+        "userId": "ea3cc51b-d3ce-4aba-ad9e-5f4a83d31d80",
+        "session": "HttpOnly 세션 쿠키, 서버에는 SHA-256 해시만 저장, 1시간 만료"
+      }
+    },
+    {
+      "route": "/notes",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "notes": [
+          {
+            "id": "501f4a56-89e4-4e4c-9575-611fee8c37a8",
+            "title": "지원 준비 목록",
+            "body": "account-b의 가상 기록 2. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "8da81591-653c-4db7-b5ad-bc988b818c1b",
+            "title": "프로젝트 메모",
+            "body": "account-b의 가상 기록 1. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "bb65bd74-4bd5-4566-a1b3-bed3f20bb299",
+            "title": "학습 회고",
+            "body": "account-b의 가상 기록 3. 과제 확인용으로 만든 내용입니다."
+          }
+        ],
+        "count": 3,
+        "owner": "ea3cc51b-d3ce-4aba-ad9e-5f4a83d31d80"
+      }
+    },
+    {
+      "route": "/notes/42ce455c-3a2c-44a2-ac49-0a825a1c50da",
+      "method": "GET",
+      "request": {},
+      "status": 403,
+      "body": {
+        "error": "이 자료에 접근할 권한이 없습니다."
+      }
+    },
+    {
+      "route": "/notes/query",
+      "method": "POST",
+      "request": {
+        "userId": "9c0d7e9e-58c7-4b21-a06f-1661bcc6c027",
+        "owner_id": "9c0d7e9e-58c7-4b21-a06f-1661bcc6c027"
+      },
+      "status": 200,
+      "body": {
+        "notes": [
+          {
+            "id": "8da81591-653c-4db7-b5ad-bc988b818c1b",
+            "title": "프로젝트 메모",
+            "body": "account-b의 가상 기록 1. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "501f4a56-89e4-4e4c-9575-611fee8c37a8",
+            "title": "지원 준비 목록",
+            "body": "account-b의 가상 기록 2. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "bb65bd74-4bd5-4566-a1b3-bed3f20bb299",
+            "title": "학습 회고",
+            "body": "account-b의 가상 기록 3. 과제 확인용으로 만든 내용입니다."
+          }
+        ],
+        "owner": "ea3cc51b-d3ce-4aba-ad9e-5f4a83d31d80"
+      }
+    },
+    {
+      "route": "/passkeys/18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+      "method": "DELETE",
+      "request": {},
+      "status": 403,
+      "body": {
+        "error": "이 패스키를 삭제할 권한이 없습니다."
+      }
+    },
+    {
+      "route": "/logout",
+      "method": "POST",
+      "request": {},
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-b"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "s3dZGN-SNv-wE6hmZZ-QpLH1_AV6JR7eMRzLKhpPZH0",
+          "allowCredentials": [
+            {
+              "id": "uWep6Vn_7yfmuIAodMgURrDHX_x_j8yRVoOa8-d2qvw",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "2dvdZyosem_lLU3nPzcACrSg0bvQ4V-wp_wcmuf6PME"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "2dvdZyosem_lLU3nPzcACrSg0bvQ4V-wp_wcmuf6PME",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAACQ",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiczNkWkdOLVNOdi13RTZobVpaLVFwTEgxX0FWNkpSN2VNUnpMS2hwUFpIMCIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZSwib3RoZXJfa2V5c19jYW5fYmVfYWRkZWRfaGVyZSI6ImRvIG5vdCBjb21wYXJlIGNsaWVudERhdGFKU09OIGFnYWluc3QgYSB0ZW1wbGF0ZS4gU2VlIGh0dHBzOi8vZ29vLmdsL3lhYlBleCJ9",
+            "signature": "MEUCIQDP7RDTKoJk_PsdgFMeSL6kn7B93Ll07GpyfZoMc2OIjwIgGMk_ZyxFlaolOMMvMJRLPBowTivPVULxKgdHKodm640",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 400,
+      "body": {
+        "error": "등록된 패스키로 로그인할 수 없습니다."
+      }
+    },
+    {
+      "route": "/login/options",
+      "method": "POST",
+      "request": {
+        "username": "account-a"
+      },
+      "status": 200,
+      "body": {
+        "options": {
+          "rpId": "localhost",
+          "challenge": "GTo-8pvMk2FmWAXz5c4z1Q4f7VtQsvPrVK-kEOXs2uo",
+          "allowCredentials": [
+            {
+              "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+              "transports": [
+                "internal"
+              ],
+              "type": "public-key"
+            }
+          ],
+          "timeout": 60000,
+          "userVerification": "required"
+        },
+        "ceremonyId": "bsQkuzbB50zum-VuOuGVg_8pr17qwqkVmK2wHeCsN9w"
+      }
+    },
+    {
+      "route": "/login/verify",
+      "method": "POST",
+      "request": {
+        "ceremonyId": "bsQkuzbB50zum-VuOuGVg_8pr17qwqkVmK2wHeCsN9w",
+        "response": {
+          "id": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "rawId": "18zv4qZOUxQ2rwly4UgwzSvyjBy1FjA3jGDEiXl_ohM",
+          "response": {
+            "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAACg",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiR1RvLThwdk1rMkZtV0FYejVjNHoxUTRmN1Z0UXN2UHJWSy1rRU9YczJ1byIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImNyb3NzT3JpZ2luIjpmYWxzZX0",
+            "signature": "MEUCIQD0QogExU_KFKEaDOKg8_g0nB7BK6ApXA5Tqdo1lSLdZQIgAzqTFa63bOelNz0-VVhfu7YYfsIO1hC8hM2iYSUshj8",
+            "userHandle": "OWMwZDdlOWUtNThjNy00YjIxLWEwNmYtMTY2MWJjYzZjMDI3"
+          },
+          "type": "public-key",
+          "clientExtensionResults": {},
+          "authenticatorAttachment": "platform"
+        }
+      },
+      "status": 200,
+      "body": {
+        "ok": true
+      }
+    },
+    {
+      "route": "/notes/501f4a56-89e4-4e4c-9575-611fee8c37a8",
+      "method": "GET",
+      "request": {},
+      "status": 403,
+      "body": {
+        "error": "이 자료에 접근할 권한이 없습니다."
+      }
+    },
+    {
+      "route": "/notes?userId=ea3cc51b-d3ce-4aba-ad9e-5f4a83d31d80",
+      "method": "GET",
+      "request": {},
+      "status": 200,
+      "body": {
+        "notes": [
+          {
+            "id": "42ce455c-3a2c-44a2-ac49-0a825a1c50da",
+            "title": "프로젝트 메모",
+            "body": "account-a의 가상 기록 1. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "56b5c21e-eeca-443a-88c1-5b669f2d61bb",
+            "title": "학습 회고",
+            "body": "account-a의 가상 기록 3. 과제 확인용으로 만든 내용입니다."
+          },
+          {
+            "id": "ff6eed82-3cf2-497b-8a27-0ecda59face7",
+            "title": "지원 준비 목록",
+            "body": "account-a의 가상 기록 2. 과제 확인용으로 만든 내용입니다."
+          }
+        ],
+        "count": 3,
+        "owner": "9c0d7e9e-58c7-4b21-a06f-1661bcc6c027"
+      }
+    }
+  ]
+}

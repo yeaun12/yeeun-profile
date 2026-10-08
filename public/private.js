@@ -1,0 +1,44 @@
+/* Real WebAuthn ceremony; private contents are never embedded in this file. */
+const $=s=>document.querySelector(s),log=[];
+let me=null,lastLogin=null,busy=false;
+const mask=v=>{if(Array.isArray(v))return v.map(mask);if(v&&typeof v==='object')return Object.fromEntries(Object.entries(v).map(([k,x])=>[k,/token|cookie|session|privatekey|secret/i.test(k)?'[가림]':mask(x)]));return v;};
+async function api(path,method='GET',body){const response=await fetch('/api'+path,{method,headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});const data=await response.json();log.push({at:new Date().toISOString(),method,path,request:mask(body||{}),status:response.status,response:mask(data)});if(!response.ok){const e=Error(data.error);e.status=response.status;throw e;}return data;}
+function status(text){$('#vault-status').textContent=text;}
+// Keep ceremony feedback next to the action, above private records.
+$('#vault-register').after($('#vault-status'));
+const localChoice=document.createElement('label');
+const localToggle=document.createElement('input');localToggle.type='checkbox';localToggle.id='vault-local-only';localToggle.style.width='auto';
+localChoice.append(localToggle,document.createTextNode('이 기기의 인증기로 등록 (Windows Hello 등)'));
+$('#vault-register').before(localChoice);
+// Group existing controls without duplicating the public page markup.
+const vault=$('#private'), authPanel=document.createElement('div'), workPanel=document.createElement('div'), layout=document.createElement('div');
+authPanel.className='vault-auth';workPanel.className='vault-work';layout.className='vault-layout';
+let control=$('#vault-username').closest('label');
+while(control && control!==$('#vault-open')){const next=control.nextElementSibling;authPanel.append(control);control=next;}
+const checks=vault.querySelector(':scope > details');
+workPanel.append($('#vault-open'),checks);layout.append(authPanel,workPanel);vault.append(layout);
+const sessionActions=document.createElement('div');
+sessionActions.style.display='flex';sessionActions.style.flexWrap='wrap';sessionActions.style.alignItems='center';
+$('#vault-logout').hidden=true;
+sessionActions.append($('#vault-login'),$('#vault-logout'));
+authPanel.append(sessionActions,$('#vault-status'));
+function syncSessionActions(){$('#vault-login').disabled=busy||!!me;$('#vault-logout').hidden=!me;}
+
+function clearAccountInputs(){for(const id of ['#vault-keyname','#vault-foreign-id','#vault-foreign-owner'])$(id).value='';$('#vault-storage').selectedIndex=0;localToggle.checked=false;}
+$('#vault-username').addEventListener('input',()=>{clearAccountInputs();lastLogin=null;status('');});
+async function run(fn){if(busy)return;busy=true;document.querySelectorAll('.vault button').forEach(x=>x.disabled=true);try{await fn();}catch(e){status(e.message);}finally{busy=false;document.querySelectorAll('.vault button').forEach(x=>x.disabled=false);syncSessionActions();}}
+function text(tag,value){const el=document.createElement(tag);el.textContent=value;return el;}
+async function refresh(){const previousUser=me?.userId;try{me=await api('/me');}catch{me=null;}if(previousUser!==me?.userId){clearAccountInputs();if(!me)lastLogin=null;}syncSessionActions();$('#vault-locked').hidden=!!me;$('#vault-open').hidden=!me;$('#vault-register').textContent=me?'패스키 추가 등록':'새 계정과 패스키 등록';$('#vault-username').disabled=!!me;$('#vault-username').value=me?.username||$('#vault-username').value;if(!me){$('#vault-notes').replaceChildren();$('#vault-keys').replaceChildren();return;}
+$('#vault-account').textContent=`${me.username} · 계정 ID: ${me.userId}`;
+const data=await api('/notes');$('#vault-notes').replaceChildren(...data.notes.map(n=>{const a=document.createElement('article');a.append(text('h3',n.title),text('p',n.body),text('small','자료 ID: '+n.id));return a;}));
+const keys=await api('/passkeys');$('#vault-policy').textContent=keys.lastKeyPolicy;
+$('#vault-keys').replaceChildren(...keys.passkeys.map(k=>{const a=document.createElement('article');a.append(text('strong',k.name),text('p',`${k.storage} · ${new Date(Number(k.created_at)).toLocaleString('ko-KR')}`),text('small','패스키 ID: '+k.id));const d=document.createElement('details');d.append(text('summary','서버에 저장된 공개키 보기'),text('pre',k.public_key));a.append(d);const btn=text('button','이 패스키 삭제');btn.className='secondary';btn.onclick=()=>run(async()=>{if(!confirm(`${k.name} 패스키를 삭제할까요?`))return;await api('/passkeys/'+encodeURIComponent(k.id),'DELETE');status('삭제했습니다. 남은 패스키로 다시 로그인하세요. 삭제한 키로 로그인한 세션은 종료됩니다.');await refresh();});a.append(btn);return a;}));}
+$('#vault-register').onclick=()=>run(async()=>{let ceremony;try{status('패스키 등록을 준비하고 있습니다.');if(localToggle.checked){const available=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();if(!available)throw Error('이 브라우저에서 기기 인증기를 사용할 수 없습니다. Windows Hello PIN 설정 또는 다른 패스키 저장소가 필요합니다.');$('#vault-storage').value='기기 자체';}const r=await api('/register/options','POST',{username:$('#vault-username').value,name:$('#vault-keyname').value,storage:$('#vault-storage').value});ceremony=r.ceremonyId;if(localToggle.checked){r.options.authenticatorSelection={...r.options.authenticatorSelection,authenticatorAttachment:'platform'};r.options.hints=['client-device'];}status('열린 인증 창에서 등록을 완료해 주세요.');const response=await SimpleWebAuthnBrowser.startRegistration({optionsJSON:r.options});await api('/register/verify','POST',{ceremonyId:ceremony,response});await refresh();status('패스키를 등록했습니다. 개인키는 선택한 저장소에 있고, 서버에는 공개키가 저장됩니다.');}catch(e){log.push({at:new Date().toISOString(),stage:'registration-browser',errorName:e.name,error:e.message});if(ceremony){try{await api('/register/cancel','POST',{ceremonyId:ceremony});}catch{}}if(e.name==='InvalidStateError'||e.code==='ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED')throw Error('이 저장소에는 이미 이 계정의 패스키가 있습니다. 두 번째 키는 Windows Hello 또는 다른 저장소에 등록하세요. 기존 키는 유지됩니다.');if(e.name==='NotAllowedError'||e.name==='AbortError')throw Error('등록을 취소했거나 시간이 지났습니다. 새 패스키와 계정은 저장하지 않았습니다.');throw e;}});
+$('#vault-login').onclick=()=>run(async()=>{const r=await api('/login/options','POST',{username:$('#vault-username').value});const response=await SimpleWebAuthnBrowser.startAuthentication({optionsJSON:r.options});lastLogin={ceremonyId:r.ceremonyId,response};await api('/login/verify','POST',lastLogin);await refresh();status('공개키로 서명을 확인하고 로그인했습니다.');});
+$('#vault-logout').onclick=()=>run(async()=>{await api('/logout','POST',{});await refresh();status('로그아웃했습니다. 비공개 내용은 화면에서 제거했습니다.');});
+$('#vault-probe-anon').onclick=()=>run(async()=>{await api('/logout','POST',{});await refresh();try{await api('/notes');}catch(e){status(`미로그인 직접 요청 결과: ${e.status} · ${e.message}`);}});
+$('#vault-probe-replay').onclick=()=>run(async()=>{if(!lastLogin)throw Error('먼저 이 화면에서 패스키 로그인을 한 번 진행하세요.');try{await api('/login/verify','POST',lastLogin);}catch(e){status(`사용한 질문 재사용 결과: ${e.status} · ${e.message}`);}});
+$('#vault-probe-foreign').onclick=()=>run(async()=>{const id=$('#vault-foreign-id').value.trim();if(!id)throw Error('다른 계정의 자료 ID를 입력하세요.');try{await api('/notes/'+encodeURIComponent(id));}catch(e){status(`다른 계정 자료 조회: ${e.status} · ${e.message}`);}});
+$('#vault-probe-owner').onclick=()=>run(async()=>{const data=await api('/notes/query','POST',{userId:$('#vault-foreign-owner').value,owner_id:$('#vault-foreign-owner').value});status(`요청 본문 계정 값은 무시합니다. 실제 반환 계정: ${data.owner} · ${data.notes.length}건`);});
+$('#vault-export').onclick=()=>run(async()=>{let audit=[];if(me)try{audit=(await api('/evidence')).audit;}catch{}const payload={kind:'T08 실제 브라우저 요청·응답',generatedAt:new Date().toISOString(),storageNote:'저장 위치는 등록 시 사용자가 선택한 값입니다. 실제 시스템 창과 함께 확인하세요.',containsRealPersonalData:false,requests:log,serverAudit:audit};const link=document.createElement('a');link.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));link.download='T08-browser-evidence.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);status('현재 탭의 요청·응답 기록을 내려받았습니다. 계정을 바꾸어도 이 탭을 닫기 전까지 기록이 이어집니다.');});
+refresh();
